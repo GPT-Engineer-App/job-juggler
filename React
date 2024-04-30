@@ -1,0 +1,56 @@
+import { Box, Button, Flex, FormControl, FormLabel, Input, ListItem, OrderedList, Text, useToast } from "@chakra-ui/react";
+import { FaPlus, FaTrash } from "react-icons/fa";
+import { useState } from "react";
+
+const Index = () => {
+  const [newTodo, setNewTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const toast = useToast();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newTodo.trim() !== "") {
+      setTodos((prevTodos) => [...prevTodos, { text: newTodo, completed: false }]);
+      setNewTodo("");
+    }
+  };
+
+  const handleDelete = (index) => {
+    setTodos((prevTodos) => prevTodos.filter((_, i) => i !== index));
+  };
+
+  const handleToggleCompleted = (index) => {
+    setTodos((prevTodos) => prevTodos.map((todo, i) => (i === index ? { ...todo, completed: !todo.completed } : todo)));
+  };
+
+  return (
+    <Box p={4} maxW="md" borderWidth="1px" borderRadius="lg" overflow="hidden">
+      <form onSubmit={handleSubmit}>
+        <FormControl>
+          <FormLabel>New Todo</FormLabel>
+          <Input type="text" value={newTodo} onChange={(e) => setNewTodo(e.target.value)} placeholder="Enter new todo" />
+          <Button type="submit" colorScheme="teal" size="sm">
+            Add Todo <FaPlus />
+          </Button>
+        </FormControl>
+      </form>
+
+      <OrderedList spacing={2} mt={4}>
+        {todos.map((todo, index) => (
+          <ListItem key={index}>
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text textDecoration={todo.completed ? "line-through" : "none"} onClick={() => handleToggleCompleted(index)}>
+                {todo.text}
+              </Text>
+              <Button size="sm" colorScheme="red" onClick={() => handleDelete(index)}>
+                <FaTrash />
+              </Button>
+            </Flex>
+          </ListItem>
+        ))}
+      </OrderedList>
+    </Box>
+  );
+};
+
+export default Index;
