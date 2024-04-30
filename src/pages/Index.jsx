@@ -6,7 +6,7 @@ import { FaPlus } from "react-icons/fa"; // example - use react-icons/fa for ico
 const Index = () => {
   // TODO: Create the website here!
   return (
-    <Button>
+    <Button onClick={() => alert("Button clicked!")}>
       Hello world! <FaPlus />
     </Button>
   ); // example
